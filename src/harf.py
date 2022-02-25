@@ -8,16 +8,13 @@ class Harf:
         next_harf = self.get_next_harf(harf)
         if next_harf is None:
             next_harf = Harf(harf)
-            self.add_next_harf(next_harf)
+            self.next_harfs.append(next_harf)
         return next_harf
 
     def get_next_harf(self, harf: chr) -> 'Harf':
         for next_harf in self.next_harfs:
             if next_harf.content == harf:
                 return next_harf
-
-    def add_next_harf(self, next_harf: 'Harf'):
-        self.next_harfs.append(next_harf)
 
     def add_location(self, location: int):
         self.locations.append(location)
