@@ -9,8 +9,10 @@ import harf
 @click.argument('xml-path', type=click.Path(dir_okay=False))
 def main(xml_path: str):
     quran = ElementTree.parse(xml_path).getroot()
-    print(build_suffix_tree(quran).size()/1e6)
-    print(len(build_location_map(quran)))
+    quran_index = build_suffix_tree(quran)
+    print(f'quran_index.size() = {quran_index.size()}')
+    location_map = build_location_map(quran)
+    print(f'len(location_map) = {len(location_map)}')
 
 
 def build_suffix_tree(quran: ElementTree.Element) -> harf.Harf:
@@ -30,7 +32,7 @@ def update_tree(root: harf.Harf, location: int, aya: str):
             for j in range(i, len(aya)):
                 node = node.get_or_add_next_harf(aya[j])
                 if j == len(aya)-1 or aya[j+1] == ' ':
-                    node.add_location(location)
+                    node.locations.append(location)
 
 
 def build_location_map(quran: ElementTree.Element) -> list[tuple[int, int]]:

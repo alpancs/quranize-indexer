@@ -16,9 +16,6 @@ class Harf:
             if next_harf.content == harf:
                 return next_harf
 
-    def add_location(self, location: int):
-        self.locations.append(location)
-
     from sys import setrecursionlimit
     setrecursionlimit(10000)
 
