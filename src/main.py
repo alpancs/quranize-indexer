@@ -10,6 +10,9 @@ import harf
 def main(xml_path: str):
     quran = ElementTree.parse(xml_path).getroot()
     quran_index = build_suffix_tree(quran)
+    print(f'quran_index.content = "{quran_index.content}"')
+    for next_harf in quran_index.next_harfs:
+        print(f'    next_harf.content = "{next_harf.content}", len(next_harf.locations) = {len(next_harf.locations)}')
     print(f'quran_index.size() = {quran_index.size()}')
     location_map = build_location_map(quran)
     print(f'len(location_map) = {len(location_map)}')
