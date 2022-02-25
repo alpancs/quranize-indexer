@@ -8,15 +8,9 @@ from harf import Harf
 @click.command()
 @click.argument('xml-path', type=click.Path(dir_okay=False))
 def main(xml_path: str):
-    from datetime import datetime
     quran = ElementTree.parse(xml_path).getroot()
-    t1 = datetime.now()
-    quran_index = build_suffix_tree(quran)
-    t2 = datetime.now()
-    print(t2-t1)
-    print(quran_index.size()/1e6)
-    print(datetime.now()-t2)
-    build_location_map(quran)
+    print(build_suffix_tree(quran).size()/1e6)
+    print(len(build_location_map(quran)))
 
 
 def build_suffix_tree(quran: ElementTree.Element) -> Harf:
