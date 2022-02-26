@@ -1,29 +1,43 @@
 from xml.etree import ElementTree
 
 import click
+import graphviz
 
-import harf
+from harf import Harf
 
 
 @click.command()
-@click.argument('xml-path', type=click.Path(dir_okay=False))
-def main(xml_path: str) -> None:
-    quran = ElementTree.parse(xml_path).getroot()
+@click.argument('quran-xml-path', type=click.Path(dir_okay=False))
+def main(quran_xml_path: str) -> None:
+    quran = ElementTree.parse(quran_xml_path).getroot()
     quran_index = build_quran_index(quran)
     location_map = build_location_map(quran)
     debug(quran_index, location_map)
 
 
-def debug(quran_index: harf.Harf, location_map: list[tuple[int, int]]) -> None:
-    print(f'quran_index.content = "{quran_index.content}"')
-    for next_harf in quran_index.next_harfs:
-        print(f'    next_harf.content = "{next_harf.content}", len(next_harf.locations) = {len(next_harf.locations)}')
-    print(f'quran_index.size() = {quran_index.size()}')
+def debug(quran_index: Harf, location_map: list[tuple[int, int]]) -> None:
+    graph = build_graph(quran_index, 7, 2)
+    graph.render('quran_index', format='svg', cleanup=True)
+    graph.render('quran_index', format='png', cleanup=True)
     print(f'len(location_map) = {len(location_map)}')
 
 
-def build_quran_index(quran: ElementTree.Element) -> harf.Harf:
-    root = harf.Harf('')
+def build_graph(harf: Harf, max_depth: int, max_width: int) -> graphviz.Digraph:
+    graph = graphviz.Digraph()
+    _build_graph(harf, harf.content, 1, max_depth, max_width, graph)
+    return graph
+
+
+def _build_graph(node: Harf, name: str, depth: int, max_depth: int, max_width: int, graph: graphviz.Digraph) -> None:
+    graph.node(name=name, label=f'{node.content}\n{len(node.locations)}')
+    if depth < max_depth:
+        for child in node.next_harfs[:max_width]:
+            _build_graph(child, name+child.content, depth+1, max_depth, max_width, graph)
+            graph.edge(name, name+child.content, label=name+child.content)
+
+
+def build_quran_index(quran: ElementTree.Element) -> Harf:
+    root = Harf('')
     location = 0
     for sura in quran:
         for aya in sura:
@@ -32,7 +46,7 @@ def build_quran_index(quran: ElementTree.Element) -> harf.Harf:
     return root
 
 
-def update_tree(root: harf.Harf, location: int, aya: str):
+def update_tree(root: Harf, location: int, aya: str):
     for i in range(len(aya)):
         if i == 0 or aya[i-1] == ' ':
             node = root
