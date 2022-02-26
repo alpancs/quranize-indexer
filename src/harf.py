@@ -1,8 +1,11 @@
+from dataclasses import dataclass, field
+
+
+@dataclass
 class Harf:
-    def __init__(self, content: chr) -> None:
-        self.content = content
-        self.next_harfs: list[Harf] = []
-        self.locations: list[int] = []
+    content: chr
+    next_harfs: list['Harf'] = field(default_factory=list)
+    locations: list[int] = field(default_factory=list)
 
     def get_or_add_next_harf(self, content: chr) -> 'Harf':
         for next_harf in self.next_harfs:
