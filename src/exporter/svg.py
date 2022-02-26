@@ -5,11 +5,9 @@ from graphviz import Digraph
 from harf import Harf
 
 
-def debug(quran_index: Harf, location_map: list[tuple[int, int]]) -> None:
-    graph = build_graph(quran_index, 7, 2)
-    graph.render('debug/quran_index', format='svg', cleanup=True)
-    graph.render('debug/quran_index', format='png', cleanup=True)
-    print(f'len(location_map) = {len(location_map)}')
+def export(harf: Harf, dst_path: str) -> None:
+    graph = build_graph(harf, 7, 2)
+    graph.render(dst_path.rstrip('.svg'), format='svg', cleanup=True)
 
 
 def build_graph(harf: Harf, max_depth: int, max_width: int) -> Digraph:
