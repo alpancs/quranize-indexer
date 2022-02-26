@@ -1,5 +1,5 @@
 class Harf:
-    def __init__(self, content: chr):
+    def __init__(self, content: chr) -> None:
         self.content = content
         self.next_harfs: list[Harf] = []
         self.locations: list[int] = []
@@ -21,6 +21,3 @@ class Harf:
 
     def size(self) -> int:
         return sum([h.size() for h in self.next_harfs], start=1)
-
-    def __repr__(self):
-        return f'"{self.content}", {self.locations}, {self.next_harfs}'
