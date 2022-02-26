@@ -9,7 +9,7 @@ import harf
 @click.argument('xml-path', type=click.Path(dir_okay=False))
 def main(xml_path: str) -> None:
     quran = ElementTree.parse(xml_path).getroot()
-    quran_index = build_suffix_tree(quran)
+    quran_index = build_quran_index(quran)
     location_map = build_location_map(quran)
     debug(quran_index, location_map)
 
@@ -22,7 +22,7 @@ def debug(quran_index: harf.Harf, location_map: list[tuple[int, int]]) -> None:
     print(f'len(location_map) = {len(location_map)}')
 
 
-def build_suffix_tree(quran: ElementTree.Element) -> harf.Harf:
+def build_quran_index(quran: ElementTree.Element) -> harf.Harf:
     root = harf.Harf('')
     location = 0
     for sura in quran:
