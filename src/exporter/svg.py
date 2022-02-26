@@ -12,7 +12,7 @@ def export(harf: Harf, dst_path: str) -> None:
 
 def build_graph(harf: Harf, max_depth: int, max_width: int) -> Digraph:
     graph = Digraph()
-    GraphBuilder(graph, 7, 2).build(harf, harf.content)
+    GraphBuilder(graph, max_depth, max_width).build(harf, harf.content)
     return graph
 
 
