@@ -3,7 +3,7 @@ from xml.etree import ElementTree
 import click
 
 from harf import Harf
-from exporter import svg
+from exporter import graphviz
 
 
 @click.command()
@@ -11,7 +11,7 @@ from exporter import svg
 def main(quran_xml_path: str) -> None:
     quran = ElementTree.parse(quran_xml_path).getroot()
     quran_index = build_quran_index(quran)
-    svg.export(quran_index, 'exported/quran_index.svg')
+    graphviz.export(quran_index, 'exported/quran_index.svg')
 
 
 def build_quran_index(quran: ElementTree.Element) -> Harf:

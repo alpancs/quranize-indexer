@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from os import path
 
 from graphviz import Digraph
 
@@ -8,7 +9,8 @@ from harf import Harf
 def export(harf: Harf, dst_path: str) -> None:
     graph = Digraph()
     GraphBuilder(graph, 7, 2).build(harf, harf.content)
-    graph.render(dst_path.rstrip('.svg'), format='svg', cleanup=True)
+    file_name, extension = path.splitext(dst_path)
+    graph.render(file_name, format=extension[1:], cleanup=True)
 
 
 @dataclass
