@@ -3,7 +3,7 @@ from xml.etree import ElementTree
 import click
 
 from harf import Harf
-from exporter import graphviz, rust
+from exporter import graphviz, json
 
 
 @click.command()
@@ -12,7 +12,7 @@ def main(quran_xml_path: str) -> None:
     quran = ElementTree.parse(quran_xml_path).getroot()
     quran_index = build_quran_index(quran)
     graphviz.export(quran_index, 'exported/quran_index.svg')
-    rust.export(quran_index, 'exported/quran_index.rs')
+    json.export(quran_index, 'exported/quran_index.json')
 
 
 def build_quran_index(quran: ElementTree.Element) -> Harf:
