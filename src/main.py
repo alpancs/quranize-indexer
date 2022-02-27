@@ -16,7 +16,7 @@ def main(quran_xml_path: str) -> None:
 
 
 def build_quran_index(quran: ElementTree.Element) -> Harf:
-    root = Harf(r'\0')
+    root = Harf('*')
     location = 0
     for sura in quran:
         for aya in sura:
