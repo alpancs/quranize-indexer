@@ -7,17 +7,33 @@ def export(harf: Harf, dst_path: str) -> None:
     with open(dst_path, 'w') as dst_file:
         builder = RustBuilder(dst_file)
         builder.build(harf)
-        builder.dst.write(';\n')
+        builder.dst.write('\n}\n')
 
 
 class RustBuilder:
     def __init__(self, dst: typing.TextIO) -> None:
         self.dst = dst
-        self.dst.write(r'struct Harf {content: char, next_harfs: Vec<Harf>, locations: Vec<u16>}')
-        self.dst.write('\n\nlet quran_index = ')
+        self.dst.write(r'''pub struct Harf {
+    content: char,
+    next_harfs: Vec<Harf>,
+    locations: Vec<u16>,
+}
+
+impl Harf {
+    fn new(content: char, next_harfs: Vec<Harf>, locations: Vec<u16>) -> Self {
+        Self {
+            content,
+            next_harfs,
+            locations,
+        }
+    }
+}
+
+pub fn get_quran_index() -> Harf {
+    ''')
 
     def build(self, harf: Harf) -> None:
-        self.dst.write("Harf{'%s',vec![" % harf.content)
+        self.dst.write("Harf::new('%s',vec![" % harf.content)
         for i, next_harf in enumerate(harf.next_harfs):
             if i > 0:
                 self.dst.write(',')
@@ -27,4 +43,4 @@ class RustBuilder:
             if i > 0:
                 self.dst.write(',')
             self.dst.write(str(location))
-        self.dst.write(']}')
+        self.dst.write('])')
