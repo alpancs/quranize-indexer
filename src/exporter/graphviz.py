@@ -8,7 +8,7 @@ from harf import Harf
 
 def export(harf: Harf, dst_path: str) -> None:
     graph = Digraph()
-    GraphBuilder(graph, 6, 12).build(harf, '')
+    GraphBuilder(graph, 7, 2).build(harf, '')
     file_name, extension = path.splitext(dst_path)
     graph.render(file_name, format=extension[1:], cleanup=True)
 
