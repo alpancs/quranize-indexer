@@ -20,7 +20,7 @@ class GraphBuilder:
     max_width: int
 
     def build(self, node: Harf, name: str, depth: int = 1) -> None:
-        self.graph.node(name=name, label=f'{node.content}\n{node.locations}')
+        self.graph.node(name=name, label=f'{node.content}\n{node.locations[:5]}')
         if depth < self.max_depth:
             for child in node.next_harfs[:self.max_width]:
                 self.build(child, name+child.content, depth+1)
