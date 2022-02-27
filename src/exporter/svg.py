@@ -6,14 +6,9 @@ from harf import Harf
 
 
 def export(harf: Harf, dst_path: str) -> None:
-    graph = build_graph(harf, 7, 2)
-    graph.render(dst_path.rstrip('.svg'), format='svg', cleanup=True)
-
-
-def build_graph(harf: Harf, max_depth: int, max_width: int) -> Digraph:
     graph = Digraph()
-    GraphBuilder(graph, max_depth, max_width).build(harf, harf.content)
-    return graph
+    GraphBuilder(graph, 7, 2).build(harf, harf.content)
+    graph.render(dst_path.rstrip('.svg'), format='svg', cleanup=True)
 
 
 @dataclass
