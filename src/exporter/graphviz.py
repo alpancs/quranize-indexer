@@ -8,7 +8,7 @@ from harf import Harf
 
 def export(harf: Harf, dst_path: str) -> None:
     graph = Digraph()
-    GraphBuilder(graph, 7, 2).build(harf, harf.content)
+    GraphBuilder(graph, 6, 12).build(harf, '')
     file_name, extension = path.splitext(dst_path)
     graph.render(file_name, format=extension[1:], cleanup=True)
 
@@ -20,7 +20,7 @@ class GraphBuilder:
     max_width: int
 
     def build(self, node: Harf, name: str, depth: int = 1) -> None:
-        self.graph.node(name=name, label=f'{node.content}\n{len(node.locations)}')
+        self.graph.node(name=name, label=f'{node.content}\n{node.locations}')
         if depth < self.max_depth:
             for child in node.next_harfs[:self.max_width]:
                 self.build(child, name+child.content, depth+1)
