@@ -16,13 +16,10 @@ class RustBuilder:
         self.dst.write('struct Harf {content: char, next_harfs: Vec<Harf>, locations: Vec<u16>}\n\n')
         self.dst.write('let quran_index = ')
 
-    def build(self, harf: Harf, depth: int = 1) -> None:
-        self.dst.write(f"{'  '*(depth-1)}Harf {{'{harf.content}', vec![")
-        if harf.next_harfs:
-            self.dst.write('\n')
-            for next_harf in harf.next_harfs:
-                self.build(next_harf, depth+1)
-                self.dst.write(',\n')
-            self.dst.write(f"{'  '*(depth-1)}], vec!{harf.locations}}}")
-        else:
-            self.dst.write(f"], vec!{harf.locations}}}")
+    def build(self, harf: Harf) -> None:
+        self.dst.write(f"Harf {{'{harf.content}', vec![")
+        for i, next_harf in enumerate(harf.next_harfs):
+            if i > 0:
+                self.dst.write(', ')
+            self.build(next_harf)
+        self.dst.write(f"], vec!{harf.locations}}}")
